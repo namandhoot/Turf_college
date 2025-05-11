@@ -79,3 +79,5 @@ The application will be available at:
 
 This project is licensed under the MIT License - see the LICENSE file for details. 
 # Minor formatting update
+
+# Temporary section for docs
