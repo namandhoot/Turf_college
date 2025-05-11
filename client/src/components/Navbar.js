@@ -164,3 +164,4 @@ const Navbar = () => {
 };
 
 export default Navbar; 
+// Minor formatting
