@@ -132,4 +132,3 @@ function App() {
 }
 
 export default App; 
-// Minor whitespace for readability
