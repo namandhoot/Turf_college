@@ -27,4 +27,4 @@ yarn-error.log*
 .vscode/
 *.swp
 *.swo
-.DS_Store # Added for clarity
+.DS_Store 
