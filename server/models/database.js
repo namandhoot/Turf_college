@@ -1,6 +1,9 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
+// Get database URL from environment or use fallback for local development
+const databaseUrl = process.env.DATABASE_URL || 'postgresql://postgres:password123@localhost:5432/turf_booking';
+
+const sequelize = new Sequelize(databaseUrl, {
   dialect: 'postgres',
   logging: false, // Set to console.log to see SQL queries
   pool: {
@@ -24,6 +27,7 @@ const testConnection = async () => {
     console.log('Database connection has been established successfully.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
+    console.log('Please ensure your database is running and DATABASE_URL is set correctly.');
   }
 };
 
