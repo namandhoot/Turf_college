@@ -1,0 +1,33 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: turf-booking-auth-policy
+  namespace: turf-booking
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/turf-booking/sa/frontend"]
+    to:
+    - operation:
+        methods: ["GET", "POST"]
+        paths: ["/api/auth/*", "/api/bookings/*"]
+  - from:
+    - source:
+        principals: ["cluster.local/ns/turf-booking/sa/admin"]
+    to:
+    - operation:
+        methods: ["GET", "POST", "PUT", "DELETE"]
+        paths: ["/api/*"]
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: turf-booking-peer-auth
+  namespace: turf-booking
+spec:
+  mtls:
+    mode: STRICT 
