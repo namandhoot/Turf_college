@@ -6,4 +6,4 @@ metadata:
 data:
   NODE_ENV: "production"
   PORT: "5001"
-  MONGODB_URI: "mongodb://mongodb-service:27017/turf_booking" 
+  DATABASE_URL: "postgresql://postgres:password123@postgres-service:5432/turf_booking" 

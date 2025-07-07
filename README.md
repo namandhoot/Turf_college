@@ -1,6 +1,6 @@
 # Turf Booking System
 
-A full-stack web application for managing sports turf bookings. Built with React.js, Node.js, Express, and MongoDB. Enhanced with modern DevOps practices and cloud infrastructure.
+A full-stack web application for managing sports turf bookings. Built with React.js, Node.js, Express, and PostgreSQL. Enhanced with modern DevOps practices and cloud infrastructure.
 
 ## Features
 
@@ -15,12 +15,14 @@ A full-stack web application for managing sports turf bookings. Built with React
 - **Infrastructure as Code with Terraform**
 - **Monitoring with Prometheus & Grafana**
 - **Security policies and mTLS**
+- **AWS RDS PostgreSQL for managed database**
 
 ## Tech Stack
 
 - **Frontend:** React.js, Material-UI
 - **Backend:** Node.js, Express
-- **Database:** MongoDB
+- **Database:** PostgreSQL (AWS RDS)
+- **ORM:** Sequelize
 - **Authentication:** JWT
 - **DevOps:** Docker, Kubernetes, Terraform, GitHub Actions
 - **Monitoring:** Prometheus, Grafana
@@ -30,9 +32,9 @@ A full-stack web application for managing sports turf bookings. Built with React
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Frontend      │    │   Backend API   │    │   MongoDB       │
-│   (React)       │◄──►│   (Node.js)     │◄──►│   (Database)    │
-│   Port: 80      │    │   Port: 5001    │    │   Port: 27017   │
+│   Frontend      │    │   Backend API   │    │   PostgreSQL    │
+│   (React)       │◄──►│   (Node.js)     │◄──►│   (AWS RDS)     │
+│   Port: 80      │    │   Port: 5001    │    │   Port: 5432    │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          └───────────────────────┼───────────────────────┘
@@ -107,7 +109,7 @@ kubectl apply -f k8s/configmap.yaml
 kubectl apply -f k8s/secret.yaml
 
 # Deploy services
-kubectl apply -f k8s/mongodb.yaml
+kubectl apply -f k8s/postgres.yaml
 kubectl apply -f k8s/backend.yaml
 kubectl apply -f k8s/frontend.yaml
 kubectl apply -f k8s/ingress.yaml
@@ -148,7 +150,7 @@ The project includes a comprehensive CI/CD pipeline:
 
 ### AWS Resources
 - **EKS Cluster:** Kubernetes cluster
-- **RDS:** Managed PostgreSQL database
+- **RDS PostgreSQL:** Managed PostgreSQL database
 - **ALB:** Application Load Balancer
 - **Route53:** DNS management
 - **ACM:** SSL/TLS certificates
@@ -159,6 +161,15 @@ The project includes a comprehensive CI/CD pipeline:
 - **Resource Limits:** CPU/Memory limits
 - **Spot Instances:** Cost-effective compute
 - **Backup Strategy:** Automated backups
+
+## Database Migration
+
+The application has been migrated from MongoDB to PostgreSQL to leverage AWS RDS:
+
+- **ORM:** Sequelize for database operations
+- **Migrations:** Automatic table creation and schema management
+- **Relationships:** Proper foreign key relationships
+- **Performance:** Optimized queries and indexing
 
 ## Contributing
 

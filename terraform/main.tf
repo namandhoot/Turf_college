@@ -61,12 +61,12 @@ module "eks" {
   tags = var.common_tags
 }
 
-# RDS PostgreSQL (Alternative to MongoDB)
+# RDS PostgreSQL
 resource "aws_db_instance" "postgres" {
   identifier = "turf-booking-db"
 
   engine         = "postgres"
-  engine_version = "14.10"
+  engine_version = "15.4"
   instance_class = "db.t3.micro"
 
   allocated_storage     = 20
@@ -203,4 +203,14 @@ resource "aws_route53_record" "cert_validation" {
 resource "aws_acm_certificate_validation" "main" {
   certificate_arn         = aws_acm_certificate.main.arn
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
+}
+
+# Outputs
+output "rds_endpoint" {
+  value = aws_db_instance.postgres.endpoint
+}
+
+output "rds_connection_string" {
+  value = "postgresql://postgres:${var.db_password}@${aws_db_instance.postgres.endpoint}/turf_booking"
+  sensitive = true
 } 

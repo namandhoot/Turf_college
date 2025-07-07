@@ -1,40 +1,64 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('./database');
+const User = require('./User');
 
-const bookingSchema = new mongoose.Schema({
+const Booking = sequelize.define('Booking', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'users',
+      key: 'id'
+    }
+  },
+  turfName: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   date: {
-    type: Date,
-    required: true
+    type: DataTypes.DATEONLY,
+    allowNull: false
   },
   startTime: {
-    type: String,
-    required: true
+    type: DataTypes.TIME,
+    allowNull: false
   },
   endTime: {
-    type: String,
-    required: true
-  },
-  turfType: {
-    type: String,
-    enum: ['padel', 'futsal', 'cricket'],
-    required: true
+    type: DataTypes.TIME,
+    allowNull: false
   },
   status: {
-    type: String,
-    enum: ['vacant', 'booked', 'maintenance'],
-    default: 'vacant'
+    type: DataTypes.ENUM('pending', 'confirmed', 'cancelled'),
+    defaultValue: 'pending'
   },
-  updatedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+  totalAmount: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false
   },
-  notes: {
-    type: String
+  paymentStatus: {
+    type: DataTypes.ENUM('pending', 'paid', 'refunded'),
+    defaultValue: 'pending'
   },
   createdAt: {
-    type: Date,
-    default: Date.now
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
   }
+}, {
+  tableName: 'bookings',
+  timestamps: true
 });
 
-module.exports = mongoose.model('Booking', bookingSchema); 
+// Define associations
+Booking.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+User.hasMany(Booking, { foreignKey: 'userId', as: 'bookings' });
+
+module.exports = Booking; 

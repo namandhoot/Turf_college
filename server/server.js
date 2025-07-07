@@ -1,27 +1,32 @@
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
+const { sequelize, testConnection } = require('./models/database');
 const authRoutes = require('./routes/auth');
 const bookingRoutes = require('./routes/bookings');
+const healthRoutes = require('./routes/health');
+const { metricsMiddleware, metricsEndpoint } = require('./middleware/metrics');
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(metricsMiddleware);
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('MongoDB Connected'))
-.catch(err => console.log('MongoDB connection error:', err));
+// Test database connection
+testConnection();
+
+// Sync database (create tables if they don't exist)
+sequelize.sync({ alter: true })
+  .then(() => console.log('Database synced'))
+  .catch(err => console.log('Database sync error:', err));
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api', healthRoutes);
+app.get('/metrics', metricsEndpoint);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

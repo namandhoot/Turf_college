@@ -1,27 +1,21 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const { sequelize } = require('../models/database');
 const router = express.Router();
 
 // Health check endpoint
 router.get('/health', async (req, res) => {
   try {
     // Check database connection
-    const dbState = mongoose.connection.readyState;
-    const dbStatus = dbState === 1 ? 'connected' : 'disconnected';
+    await sequelize.authenticate();
     
     const healthStatus = {
       status: 'healthy',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
-      database: dbStatus,
+      database: 'connected',
       memory: process.memoryUsage(),
       version: process.version
     };
-
-    if (dbState !== 1) {
-      healthStatus.status = 'unhealthy';
-      return res.status(503).json(healthStatus);
-    }
 
     res.status(200).json(healthStatus);
   } catch (error) {
@@ -36,12 +30,8 @@ router.get('/health', async (req, res) => {
 // Readiness probe
 router.get('/ready', async (req, res) => {
   try {
-    const dbState = mongoose.connection.readyState;
-    if (dbState === 1) {
-      res.status(200).json({ status: 'ready' });
-    } else {
-      res.status(503).json({ status: 'not ready' });
-    }
+    await sequelize.authenticate();
+    res.status(200).json({ status: 'ready' });
   } catch (error) {
     res.status(503).json({ status: 'not ready', error: error.message });
   }

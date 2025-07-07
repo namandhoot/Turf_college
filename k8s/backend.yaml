@@ -29,11 +29,11 @@ spec:
             configMapKeyRef:
               name: turf-booking-config
               key: PORT
-        - name: MONGODB_URI
+        - name: DATABASE_URL
           valueFrom:
             configMapKeyRef:
               name: turf-booking-config
-              key: MONGODB_URI
+              key: DATABASE_URL
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
@@ -54,7 +54,7 @@ spec:
           periodSeconds: 10
         readinessProbe:
           httpGet:
-            path: /api/health
+            path: /api/ready
             port: 5001
           initialDelaySeconds: 5
           periodSeconds: 5

@@ -1,18 +1,18 @@
 version: '3.8'
 
 services:
-  mongodb:
-    image: mongo:6.0
-    container_name: turf-mongodb
+  postgres:
+    image: postgres:15
+    container_name: turf-postgres
     restart: unless-stopped
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password123
+      POSTGRES_DB: turf_booking
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
     volumes:
-      - mongodb_data:/data/db
-      - ./server/scripts/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - postgres_data:/var/lib/postgresql/data
     ports:
-      - "27017:27017"
+      - "5432:5432"
     networks:
       - turf-network
 
@@ -23,12 +23,12 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=5001
-      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/turf_booking?authSource=admin
+      - DATABASE_URL=postgresql://postgres:password123@postgres:5432/turf_booking
       - JWT_SECRET=your-super-secret-jwt-key-change-in-production
     ports:
       - "5001:5001"
     depends_on:
-      - mongodb
+      - postgres
     networks:
       - turf-network
     volumes:
@@ -63,7 +63,7 @@ services:
       - turf-network
 
 volumes:
-  mongodb_data:
+  postgres_data:
 
 networks:
   turf-network:
