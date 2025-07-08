@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: your-dockerhub-username/turf-booking-frontend:latest
+        image: namandhoot26/turf-booking-frontend:latest
         ports:
         - containerPort: 80
 ---

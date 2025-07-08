@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: your-dockerhub-username/turf-booking-backend:latest
+        image: namandhoot26/turf-booking-backend:latest
         ports:
         - containerPort: 5001
         env:

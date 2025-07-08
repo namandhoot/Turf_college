@@ -47,12 +47,12 @@ docker-compose up -d
 1. **Build and push to Docker Hub**
 ```bash
 # Build backend image
-docker build -t your-dockerhub-username/turf-booking-backend:latest ./server
-docker push your-dockerhub-username/turf-booking-backend:latest
+docker build -t namandhoot26/turf-booking-backend:latest ./server
+docker push namandhoot26/turf-booking-backend:latest
 
 # Build frontend image
-docker build -t your-dockerhub-username/turf-booking-frontend:latest ./client
-docker push your-dockerhub-username/turf-booking-frontend:latest
+docker build -t namandhoot26/turf-booking-frontend:latest ./client
+docker push namandhoot26/turf-booking-frontend:latest
 ```
 
 2. **Deploy to Kubernetes**

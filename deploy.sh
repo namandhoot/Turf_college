@@ -7,13 +7,13 @@ echo "🚀 Deploying Turf Booking System..."
 
 # Build Docker images
 echo "📦 Building Docker images..."
-docker build -t your-dockerhub-username/turf-booking-backend:latest ./server
-docker build -t your-dockerhub-username/turf-booking-frontend:latest ./client
+docker build -t namandhoot26/turf-booking-backend:latest ./server
+docker build -t namandhoot26/turf-booking-frontend:latest ./client
 
 # Push to Docker Hub
 echo "⬆️  Pushing to Docker Hub..."
-docker push your-dockerhub-username/turf-booking-backend:latest
-docker push your-dockerhub-username/turf-booking-frontend:latest
+docker push namandhoot26/turf-booking-backend:latest
+docker push namandhoot26/turf-booking-frontend:latest
 
 # Deploy to Kubernetes
 echo "☸️  Deploying to Kubernetes..."
