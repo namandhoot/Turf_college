@@ -1,6 +1,6 @@
 # Turf Booking System
 
-A full-stack web application for managing sports turf bookings. Built with React.js, Node.js, Express, and PostgreSQL. Enhanced with modern DevOps practices and cloud infrastructure.
+A full-stack web application for managing sports turf bookings. Built with React.js, Node.js, Express, and PostgreSQL.
 
 ## Features
 
@@ -9,52 +9,21 @@ A full-stack web application for managing sports turf bookings. Built with React
 - Admin dashboard for managing bookings
 - Real-time booking status updates
 - Responsive design
-- **Containerized with Docker**
-- **Kubernetes deployment ready**
-- **CI/CD pipeline with GitHub Actions**
-- **Infrastructure as Code with Terraform**
-- **Monitoring with Prometheus & Grafana**
-- **Security policies and mTLS**
-- **AWS RDS PostgreSQL for managed database**
 
 ## Tech Stack
 
 - **Frontend:** React.js, Material-UI
 - **Backend:** Node.js, Express
-- **Database:** PostgreSQL (AWS RDS)
-- **ORM:** Sequelize
+- **Database:** PostgreSQL
 - **Authentication:** JWT
-- **DevOps:** Docker, Kubernetes, Terraform, GitHub Actions
-- **Monitoring:** Prometheus, Grafana
-- **Cloud:** AWS (EKS, RDS, ALB, Route53)
 
-## Architecture
-
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Frontend      │    │   Backend API   │    │   PostgreSQL    │
-│   (React)       │◄──►│   (Node.js)     │◄──►│   (AWS RDS)     │
-│   Port: 80      │    │   Port: 5001    │    │   Port: 5432    │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         └───────────────────────┼───────────────────────┘
-                                 │
-                    ┌─────────────────┐
-                    │   Nginx         │
-                    │   (Load Balancer)│
-                    │   Port: 80/443  │
-                    └─────────────────┘
-```
-
-## Getting Started
+## Quick Start
 
 ### Prerequisites
 
 - Node.js (v18 or higher)
-- Docker & Docker Compose
+- Docker
 - Kubernetes cluster (minikube, kind, or cloud)
-- Terraform (for infrastructure)
-- AWS CLI (for cloud deployment)
 
 ### Local Development
 
@@ -64,112 +33,48 @@ git clone https://github.com/namandhoot/turf-booking.git
 cd turf-booking
 ```
 
-2. **Using Docker Compose (Recommended)**
+2. **Run with Docker Compose**
 ```bash
-# Start all services
 docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
 ```
 
-3. **Manual Setup**
+3. **Access the application**
+- Frontend: http://localhost
+- Backend API: http://localhost:5001
+
+### Docker Deployment
+
+1. **Build and push to Docker Hub**
 ```bash
-# Backend
-cd server
-npm install
-npm start
+# Build backend image
+docker build -t your-dockerhub-username/turf-booking-backend:latest ./server
+docker push your-dockerhub-username/turf-booking-backend:latest
 
-# Frontend
-cd client
-npm install
-npm start
-```
-
-### Cloud Deployment
-
-1. **Initialize Terraform**
-```bash
-cd terraform
-terraform init
-terraform plan
-terraform apply
+# Build frontend image
+docker build -t your-dockerhub-username/turf-booking-frontend:latest ./client
+docker push your-dockerhub-username/turf-booking-frontend:latest
 ```
 
 2. **Deploy to Kubernetes**
 ```bash
-# Apply namespace
-kubectl apply -f k8s/namespace.yaml
-
-# Apply configurations
-kubectl apply -f k8s/configmap.yaml
-kubectl apply -f k8s/secret.yaml
-
-# Deploy services
-kubectl apply -f k8s/postgres.yaml
-kubectl apply -f k8s/backend.yaml
-kubectl apply -f k8s/frontend.yaml
-kubectl apply -f k8s/ingress.yaml
+# Apply Kubernetes manifests
+kubectl apply -f k8s/
 ```
 
-3. **Setup Monitoring**
-```bash
-# Deploy Prometheus & Grafana
-kubectl apply -f monitoring/
+3. **Access the application**
+- Check the service IP: `kubectl get svc`
+- Or use port-forward: `kubectl port-forward svc/frontend-service 80:80`
+
+## Project Structure
+
 ```
-
-## CI/CD Pipeline
-
-The project includes a comprehensive CI/CD pipeline:
-
-- **Automated Testing:** Unit tests, integration tests
-- **Security Scanning:** Trivy vulnerability scanner
-- **Container Building:** Multi-stage Docker builds
-- **Image Publishing:** Docker Hub integration
-- **Automated Deployment:** Kubernetes deployment
-
-## Monitoring & Observability
-
-- **Metrics Collection:** Prometheus
-- **Visualization:** Grafana dashboards
-- **Logging:** Centralized logging with ELK stack
-- **Alerting:** Custom alert rules
-
-## Security Features
-
-- **mTLS:** Mutual TLS authentication
-- **Network Policies:** Kubernetes network policies
-- **RBAC:** Role-based access control
-- **Secrets Management:** Kubernetes secrets
-- **Vulnerability Scanning:** Automated security scanning
-
-## Infrastructure
-
-### AWS Resources
-- **EKS Cluster:** Kubernetes cluster
-- **RDS PostgreSQL:** Managed PostgreSQL database
-- **ALB:** Application Load Balancer
-- **Route53:** DNS management
-- **ACM:** SSL/TLS certificates
-- **VPC:** Network isolation
-
-### Cost Optimization
-- **Auto Scaling:** Horizontal Pod Autoscaler
-- **Resource Limits:** CPU/Memory limits
-- **Spot Instances:** Cost-effective compute
-- **Backup Strategy:** Automated backups
-
-## Database Migration
-
-The application has been migrated from MongoDB to PostgreSQL to leverage AWS RDS:
-
-- **ORM:** Sequelize for database operations
-- **Migrations:** Automatic table creation and schema management
-- **Relationships:** Proper foreign key relationships
-- **Performance:** Optimized queries and indexing
+turf-booking/
+├── server/                 # Backend API
+├── client/                 # Frontend React app
+├── k8s/                   # Kubernetes manifests
+├── docker-compose.yml     # Local development
+└── README.md
+```
 
 ## Contributing
 

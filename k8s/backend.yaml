@@ -2,9 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
-  namespace: turf-booking
+  namespace: default
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: backend
@@ -19,51 +19,16 @@ spec:
         ports:
         - containerPort: 5001
         env:
-        - name: NODE_ENV
-          valueFrom:
-            configMapKeyRef:
-              name: turf-booking-config
-              key: NODE_ENV
-        - name: PORT
-          valueFrom:
-            configMapKeyRef:
-              name: turf-booking-config
-              key: PORT
         - name: DATABASE_URL
-          valueFrom:
-            configMapKeyRef:
-              name: turf-booking-config
-              key: DATABASE_URL
+          value: "postgresql://postgres:password123@postgres-service:5432/turf_booking"
         - name: JWT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: turf-booking-secrets
-              key: JWT_SECRET
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "100m"
-          limits:
-            memory: "256Mi"
-            cpu: "200m"
-        livenessProbe:
-          httpGet:
-            path: /api/health
-            port: 5001
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /api/ready
-            port: 5001
-          initialDelaySeconds: 5
-          periodSeconds: 5
+          value: "your-secret-key"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: backend-service
-  namespace: turf-booking
+  namespace: default
 spec:
   selector:
     app: backend
